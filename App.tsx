@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   createStackNavigator,
@@ -18,6 +18,7 @@ const defaultStackScreenOptions: StackNavigationOptions = {
     paddingTop: 15,
     fontSize: 16,
   },
+  headerLeft: () => null,
   headerBackTitleVisible: false,
   headerTitle: (props: any) => (
     // eslint-disable-next-line react-native/no-inline-styles

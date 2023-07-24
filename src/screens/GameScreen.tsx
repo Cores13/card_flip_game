@@ -1,4 +1,4 @@
-import {StyleSheet, SafeAreaView, Text} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 import Card from '../components/Card';
 import React, {useEffect, useState} from 'react';
 import res from '../res';
@@ -6,7 +6,9 @@ import ResetButton from '../components/ResetButton';
 
 const GameScreen = () => {
   const [loading, setLoading] = useState(true);
-  const [selected, setSelected] = useState(true);
+  const [selected, setSelected] = useState(false);
+  const [showReset, setShowReset] = useState(false);
+  const [prize, setPrize] = useState([]);
   const [cards, setCards] = useState<any>([
     {
       id: 1,
@@ -45,8 +47,6 @@ const GameScreen = () => {
   }
 
   useEffect(() => {
-    console.log(loading);
-
     (async function () {
       try {
         const randomizedCards = await randomize(cards);
@@ -56,14 +56,12 @@ const GameScreen = () => {
         console.error(e);
       }
     })();
-    console.log(loading);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cards]);
+  }, []);
 
   return (
     <>
-      {selected && <ResetButton />}
-      <SafeAreaView style={styles.cardsWrapper}>
+      {showReset && <ResetButton prize={prize} />}
+      <View style={styles.cardsWrapper}>
         {loading === false ? (
           cards.map((card: any, index: any) => {
             return (
@@ -72,13 +70,15 @@ const GameScreen = () => {
                 prize={card}
                 selected={selected}
                 setSelected={setSelected}
+                setShowReset={setShowReset}
+                setPrize={setPrize}
               />
             );
           })
         ) : (
           <Text>Loading</Text>
         )}
-      </SafeAreaView>
+      </View>
     </>
   );
 };

@@ -6,14 +6,10 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import res from '../res';
 
-const Card = ({prize, selected, setSelected}: any) => {
+const Card = ({prize, selected, setSelected, setPrize, setShowReset}: any) => {
   const spin = useSharedValue<number>(0);
-
-  useEffect(() => {
-    setSelected(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const frontAnimatedStyle = useAnimatedStyle(() => {
     const spinVal = interpolate(spin.value, [0, 1], [0, 180]);
@@ -43,12 +39,21 @@ const Card = ({prize, selected, setSelected}: any) => {
       onPress={() => {
         if (!selected) {
           spin.value = spin.value ? 0 : 1;
+          setPrize(prize);
           setSelected(true);
+          setTimeout(() => {
+            setShowReset(true);
+          }, 1500);
         }
       }}
       key={prize.id}>
       <Animated.View style={[styles.front, frontAnimatedStyle]}>
-        <Text>Otvori za poklon</Text>
+        <Image
+          source={res.icons.gift}
+          style={styles.frontImage}
+          resizeMode="contain"
+        />
+        <Text style={styles.frontText}>Otvori za poklon</Text>
       </Animated.View>
       <Animated.View style={[styles.back, backAnimatedStyle]}>
         <Image source={prize.src} style={styles.image} resizeMode="contain" />
@@ -70,12 +75,16 @@ const styles = StyleSheet.create({
   front: {
     height: 255,
     width: 575,
-    backgroundColor: '#D8D9CF',
+    backgroundColor: 'rgb(235, 235, 245)',
     borderRadius: 16,
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 15,
+  },
+  frontText: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   back: {
     height: 255,
@@ -86,6 +95,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 15,
+  },
+  frontImage: {
+    width: 445,
+    height: '65%',
   },
   image: {
     width: 445,

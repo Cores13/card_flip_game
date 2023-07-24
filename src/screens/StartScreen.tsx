@@ -7,7 +7,7 @@ const StartScreen = ({navigation}: any) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('GameScreen')}>
-        <Text style={styles.buttonText}>Zapocni igru</Text>
+        <Text style={styles.buttonText}>Započni igru</Text>
       </TouchableOpacity>
     </View>
   );
