@@ -1,5 +1,5 @@
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 const ResetButton = ({prize}: any) => {

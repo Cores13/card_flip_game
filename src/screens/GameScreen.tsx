@@ -4,7 +4,12 @@ import React, {useEffect, useState} from 'react';
 import res from '../res';
 import ResetButton from '../components/ResetButton';
 
+import IOrientation from '../interfaces/orientation';
+import {selectOrientation} from '../redux/slices/orientationSlice';
+import {useSelector} from 'react-redux';
+
 const GameScreen = () => {
+  const orientation: IOrientation = useSelector(selectOrientation);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState(false);
   const [showReset, setShowReset] = useState(false);
@@ -56,7 +61,21 @@ const GameScreen = () => {
         console.error(e);
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const styles = StyleSheet.create({
+    cardsWrapper: {
+      backgroundColor: 'white',
+      display: 'flex',
+      flexDirection: orientation.orientation === 'portrait' ? 'column' : 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'space-evenly',
+      height: '100%',
+      padding: 12,
+    },
+  });
 
   return (
     <>
@@ -84,15 +103,3 @@ const GameScreen = () => {
 };
 
 export default GameScreen;
-
-const styles = StyleSheet.create({
-  cardsWrapper: {
-    backgroundColor: 'white',
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    height: '100%',
-  },
-});

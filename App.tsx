@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {
   createStackNavigator,
@@ -6,7 +6,9 @@ import {
 } from '@react-navigation/stack';
 import StartScreen from './src/screens/StartScreen';
 import GameScreen from './src/screens/GameScreen';
-import {Text} from 'react-native';
+import {Dimensions, Text} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {flip} from './src/redux/slices/orientationSlice';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +31,22 @@ const defaultStackScreenOptions: StackNavigationOptions = {
 };
 
 function AppNavigator() {
+  const dispatch = useDispatch();
+
+  const isPortrait = () => {
+    const dim = Dimensions.get('screen');
+    return dim.height >= dim.width;
+  };
+
+  // Event Listener for orientation changes
+  Dimensions.addEventListener('change', () => {
+    dispatch(
+      flip({
+        orientation: isPortrait() ? 'portrait' : 'landscape',
+      }),
+    );
+  });
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{...defaultStackScreenOptions}}>

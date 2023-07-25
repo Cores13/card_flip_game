@@ -1,5 +1,5 @@
 import {StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -8,7 +8,12 @@ import Animated, {
 } from 'react-native-reanimated';
 import res from '../res';
 
+import IOrientation from '../interfaces/orientation';
+import {selectOrientation} from '../redux/slices/orientationSlice';
+import {useSelector} from 'react-redux';
+
 const Card = ({prize, selected, setSelected, setPrize, setShowReset}: any) => {
+  const orientation: IOrientation = useSelector(selectOrientation);
   const spin = useSharedValue<number>(0);
 
   const frontAnimatedStyle = useAnimatedStyle(() => {
@@ -32,6 +37,48 @@ const Card = ({prize, selected, setSelected, setPrize, setShowReset}: any) => {
       ],
     };
   }, []);
+
+  const styles = StyleSheet.create({
+    card: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: 'white',
+    },
+    front: {
+      height: orientation.orientation === 'portrait' ? 255 : 500,
+      width: orientation.orientation === 'portrait' ? 575 : 300,
+      backgroundColor: 'rgb(235, 235, 245)',
+      borderRadius: 16,
+      position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: orientation.orientation === 'portrait' ? 15 : 5,
+    },
+    frontText: {
+      fontSize: 18,
+      fontWeight: 'bold',
+    },
+    back: {
+      height: orientation.orientation === 'portrait' ? 255 : 500,
+      width: orientation.orientation === 'portrait' ? 575 : 300,
+      backgroundColor: '#7CFAB1',
+      borderRadius: 16,
+      backfaceVisibility: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: orientation.orientation === 'portrait' ? 15 : 5,
+    },
+    frontImage: {
+      width: orientation.orientation === 'portrait' ? 445 : 200,
+      height: '65%',
+    },
+    image: {
+      width: orientation.orientation === 'portrait' ? 445 : 250,
+      height: '100%',
+    },
+  });
 
   return (
     <TouchableOpacity
@@ -63,45 +110,3 @@ const Card = ({prize, selected, setSelected, setPrize, setShowReset}: any) => {
 };
 
 export default Card;
-
-const styles = StyleSheet.create({
-  card: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    color: 'white',
-  },
-  front: {
-    height: 255,
-    width: 575,
-    backgroundColor: 'rgb(235, 235, 245)',
-    borderRadius: 16,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 15,
-  },
-  frontText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  back: {
-    height: 255,
-    width: 575,
-    backgroundColor: '#7CFAB1',
-    borderRadius: 16,
-    backfaceVisibility: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 15,
-  },
-  frontImage: {
-    width: 445,
-    height: '65%',
-  },
-  image: {
-    width: 445,
-    height: '100%',
-  },
-});
